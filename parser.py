@@ -10,7 +10,8 @@ from os.path import isfile, isdir
 
 INVALID_ARGS = "The file given as input is invalid..."
 NUMBER_OF_ARGS = 2
-
+VM_SUFFIX = "\.vm$"
+JACK_SUFFIX = ".jack"
 VALID_INPUT_SUFFIX = ".*\.jack$"
 jack_suffix_pattern = re.compile(VALID_INPUT_SUFFIX)
 
@@ -35,18 +36,35 @@ def get_files(args):
         exit()
 
 
+def file_output_path(file_path):
+    """
+    :param file_path: The original file path
+    :return: the path to the output file (.vm).
+    """
+    if isfile(file_path):
+        return re.sub(JACK_SUFFIX, VM_SUFFIX, file_path)
+    else:
+        temp_path = re.sub("/$", "", file_path)
+        temp_list = temp_path.split("/")
+        return file_path + "/" + temp_list[len(temp_list) - 1] + VM_SUFFIX
+
+
+def lines_list_to_file(file_path, lines_list):
+    """
+    :param file_path: path to the output file
+    :param lines_list: a list of lines to save to the output file
+    :return: None
+    """
+    with open(file_path, "w+") as output_file:
+        for line in lines_list:
+            output_file.write(line + "\n")
 
 
 # The main program:
 if __name__ == "__main__":
     comparison_counter = 0
     list_of_files_path = get_files(sys.argv)
-    # assembly_lines_list = ["@256",
-    #                        "D = A",
-    #                        "@SP",
-    #                        "M = D // set stack pointer to 0x0100",
-    #                        "@Sys.init",
-    #                        "0;JMP // invoke Sys.init"]
+    xml_lines_list = []
     for file_path in list_of_files_path:
-        assembly_lines_list += file_to_assembly_lines(file_path)
-    lines_list_to_file(file_output_path(sys.argv[1]), assembly_lines_list)
+        xml_lines_list = file_to_xml_lines(file_path)
+        lines_list_to_file(file_output_path(sys.argv[1]), xml_lines_list)
