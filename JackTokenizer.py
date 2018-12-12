@@ -11,8 +11,11 @@ class JackTokenizer:
                 "BOOLEAN", "CHAR", "VOID", "VAR", "STATIC", "FIELD", "LET",
                 "DO", "IF", "ELSE", "WHILE", "RETURN", "TRUE", "FALSE",
                 "NULL", "THIS"]
+
     TOKEN_TYPES = ["KEYWORD", "SYMBOL", "IDENTIFIER", "INT_CONST",
                    "STRING_CONST"]
+
+
 
     def __init__(self, input_file):
         """
@@ -24,7 +27,6 @@ class JackTokenizer:
         self.skipWhiteSpace()
         self.tokenType = "NONE"
         self.currentToken = "NONE"
-
 
     def skipWhiteSpace(self):
         """
@@ -49,7 +51,8 @@ class JackTokenizer:
         pass
 
     def advance(self):
-        pass
+        self.skipWhiteSpace()
+        if 
 
     def tokenType(self):
         return self.tokenType
@@ -64,7 +67,7 @@ class JackTokenizer:
         pass
 
     def intVal(self):
-        pass
+        return int(self.currentToken)
 
     def stringVal(self):
-        pass
+        return self.currentToken
