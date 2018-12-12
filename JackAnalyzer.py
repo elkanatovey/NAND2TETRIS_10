@@ -7,6 +7,7 @@ import sys
 import re
 from os import listdir
 from os.path import isfile, isdir
+from JackTokenizer import JackTokenizer
 
 INVALID_ARGS = "The file given as input is invalid..."
 NUMBER_OF_ARGS = 2
@@ -27,6 +28,11 @@ def file_to_xml_lines(file_path):
     # function_name = DEFAULT_FUNCTION_NAME
     # return_address_index = 0
     with open(file_path, "r") as input_file:
+        tokenObject = JackTokenizer(input_file)
+
+
+
+
         for line in input_file:
             line = re.sub(COMMENT, "", line)
             line_as_list = line.split()
