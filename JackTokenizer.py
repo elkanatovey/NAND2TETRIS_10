@@ -17,12 +17,13 @@ class JackTokenizer:
 
 
 
-    def __init__(self, input_file):
+    def __init__(self, input_file_path):
         """
 
         :param input_file: the current file
         """
-        self.file = input_file
+        with open(input_file_path, "r") as file:
+            self.text = file.read()
         self.currentLine = input_file.readline().strip()
         self.skipWhiteSpace()
         self.tokenType = "NONE"
