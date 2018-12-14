@@ -11,7 +11,7 @@ from CompilationEngine import CompilationEngine
 
 INVALID_ARGS = "The file given as input is invalid..."
 NUMBER_OF_ARGS = 2
-VM_SUFFIX = "\.vm$"
+VM_SUFFIX = ".vm$"
 JACK_SUFFIX = ".jack"
 VALID_INPUT_SUFFIX = ".*\.jack$"
 JACK_SUFFIX_PATTERN = re.compile(VALID_INPUT_SUFFIX)
