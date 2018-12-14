@@ -12,7 +12,7 @@ class CompilationEngine:
         """
         self._indentation = 0
         self._tokenizer = JackTokenizer(input_file_path)
-        self._output = open(output_path, "w")
+        self._output = open(output_path, "w+")
 
 
     def compileClass(self):
