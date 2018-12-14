@@ -41,7 +41,15 @@ class CompilationEngine:
 
 
     def compileClassVarDec(self):
-        pass
+        """
+        this should only print if there actually are class var decs,
+        should run on the recursively
+        :return:
+        """
+        self._indentation += 1
+        ## code prints class vars recursively
+
+        self._indentation -= 1
 
     def compileSubroutine(self):
         pass
