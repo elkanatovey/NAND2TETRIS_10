@@ -1,6 +1,7 @@
 import re
 
-COMMENT = "//.*$"
+COMMENT = "(//.*)|(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)"
+DEBUGGING = True
 
 class JackTokenizer:
     """
@@ -24,26 +25,16 @@ class JackTokenizer:
         """
         with open(input_file_path, "r") as file:
             self.text = file.read()
-        self.currentLine = input_file.readline().strip()
-        self.skipWhiteSpace()
+        self.clear_all_comments()
         self.tokenType = "NONE"
         self.currentToken = "NONE"
 
-    def skipWhiteSpace(self):
+    def clear_all_comments(self):
         """
-        skips the whitespace in a file, recursively moves forward on
-        this
+        Clear all comments from self.text .
         """
-        self.currentLine = re.sub(COMMENT, "", self.currentLine)  ## case: //
-        if self.currentLine == "":  ## empty line
-            self.currentLine = self.file.readline().strip()
-            self.skipWhiteSpace()
-        if self.currentLine.find('/*') == 0:
-            while self.currentLine.find('*/') < 2:
-                self.currentLine = self.file.readline().strip()
-            self.currentLine = self.file.readline().strip()
-            self.skipWhiteSpace()
-
+        self.text = re.sub(COMMENT, "", self.text)
+        print(self.text)
 
 
 
@@ -53,7 +44,7 @@ class JackTokenizer:
 
     def advance(self):
         self.skipWhiteSpace()
-        if 
+
 
     def tokenType(self):
         return self.tokenType
@@ -72,3 +63,6 @@ class JackTokenizer:
 
     def stringVal(self):
         return self.currentToken
+
+if __name__ == "__main__" and DEBUGGING:
+    a = JackTokenizer("Square\Square.jack")
