@@ -60,8 +60,7 @@ class CompilationEngine:
         self._write_keyword()
 
         self._tokenizer.advance()
-
-        ## code prints class vars recursively
+        self._compile_type_and_varName()
 
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "<\classVarDec>")
@@ -71,7 +70,33 @@ class CompilationEngine:
         self._output.write("\t" * self._indentation + "<subroutineDec>")
         self._indentation += 1
         self._write_keyword()
-        ## some magic here
+
+        self._tokenizer.advance()
+        if self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
+            self._write_keyword()
+        elif self._tokenizer.tokenType() == self._tokenizer.IDENTIFIER:
+            self._write_identifier()
+
+        self._tokenizer.advance()
+        self._write_identifier()
+
+        self._tokenizer.advance()
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileParameterList()
+
+        self._write_symbol()
+
+        # compile subroutineBody:
+        self._tokenizer.advance()
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        #compile varDec:
+        while self._tokenizer.keyWord() == "var":
+
+
 
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "<\subroutineDec>")
@@ -108,6 +133,22 @@ class CompilationEngine:
 
     def CompileExpressionList(self):
         pass
+
+    def _compile_type_and_varName(self):
+        if self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
+            self._write_keyword()
+        elif self._tokenizer.tokenType() == self._tokenizer.IDENTIFIER:
+            self._write_identifier()
+        self._tokenizer.advance()
+        self._write_identifier()
+        self._tokenizer.advance()
+        while self._tokenizer.symbol() == ",":
+            self._write_symbol()
+            self._tokenizer.advance()
+            self._write_identifier()
+            self._tokenizer.advance()
+        self._write_symbol()
+        self._tokenizer.advance()
 
     def _write_identifier(self):
         self._output.write("\t" * self._indentation + "<identifier> " +
