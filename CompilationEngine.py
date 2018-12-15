@@ -95,9 +95,13 @@ class CompilationEngine:
         self._tokenizer.advance()
         #compile varDec:
         while self._tokenizer.keyWord() == "var":
+            self._write_keyword()
+            self._tokenizer.advance()
+            self._compile_type_and_varName()
 
+        self.compileStatements()
 
-
+        self._write_symbol()
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "<\subroutineDec>")
 
