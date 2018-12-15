@@ -1,6 +1,7 @@
 import re
 from JackTokenizer import JackTokenizer
 
+
 class CompilationEngine:
     """
     effects the compilation engine
@@ -18,7 +19,6 @@ class CompilationEngine:
             self._tokenizer.advance()
             self.compileClass()
 
-
     def compileClass(self):
         self._output.write("<class>\n")
         self._indentation += 1
@@ -33,21 +33,19 @@ class CompilationEngine:
         self._write_symbol()
 
         self._tokenizer.advance()
-        while self._tokenizer.keyWord() == "static" or\
-            self._tokenizer.keyWord() == "field":
+        while self._tokenizer.keyWord() == "static" or \
+                self._tokenizer.keyWord() == "field":
             self.compileClassVarDec()
         while self._tokenizer.keyWord() == "constructor" or \
                 self._tokenizer.keyWord() == "function" \
                 or self._tokenizer == "method":
             self.compileSubroutine()
 
-        self._tokenizer.advance()
         self._write_symbol()
 
         self._indentation -= 1
         self._output.write("<\class>")
         self._output.close()
-
 
     def compileClassVarDec(self):
         """
@@ -64,7 +62,6 @@ class CompilationEngine:
 
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "<\classVarDec>")
-
 
     def compileSubroutine(self):
         self._output.write("\t" * self._indentation + "<subroutineDec>")
@@ -88,12 +85,14 @@ class CompilationEngine:
 
         self._write_symbol()
 
-        # compile subroutineBody:
         self._tokenizer.advance()
+        # compile subroutineBody:
+        self._output.write("\t" * self._indentation + "<subroutineBody>")
+        self._indentation += 1
         self._write_symbol()
 
         self._tokenizer.advance()
-        #compile varDec:
+        # compile varDec:
         while self._tokenizer.keyWord() == "var":
             self._write_keyword()
             self._tokenizer.advance()
@@ -103,7 +102,10 @@ class CompilationEngine:
 
         self._write_symbol()
         self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\subroutineBody>")
+        self._indentation -= 1
         self._output.write("\t" * self._indentation + "<\subroutineDec>")
+        self._tokenizer.advance()
 
     def compileParameterList(self):
         pass
