@@ -155,7 +155,30 @@ class CompilationEngine:
         pass
 
     def compileLet(self):
-        pass
+        self._output.write("\t" * self._indentation + "<letStatement>")
+        self._indentation += 1
+        self._write_keyword()
+
+        self._tokenizer.advance()
+        self._write_identifier()
+
+        self._tokenizer.advance()
+        if self._tokenizer.symbol() == "[":
+            self._write_symbol()
+            self._tokenizer.advance()
+            self.compileExpression()
+            self._write_symbol()
+            self._tokenizer.advance()
+
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileExpression()
+        self._write_symbol()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\letStatement>")
+        self._tokenizer.advance()
 
     def compileWhile(self):
         pass
@@ -166,13 +189,13 @@ class CompilationEngine:
     def compileIf(self):
         pass
 
-    def CompileExpression(self):
+    def compileExpression(self):
         pass
 
-    def CompileTerm(self):
+    def compileTerm(self):
         pass
 
-    def CompileExpressionList(self):
+    def compileExpressionList(self):
         pass
 
     def _compile_type_and_varName(self):
