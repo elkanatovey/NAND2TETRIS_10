@@ -152,7 +152,30 @@ class CompilationEngine:
         self._output.write("\t" * self._indentation + "<\statements>")
 
     def compileDo(self):
-        pass
+        self._output.write("\t" * self._indentation + "<doStatement>")
+        self._indentation += 1
+        self._write_keyword()
+
+        self._tokenizer.advance()
+        #subroutineCall
+        self._write_identifier()
+        self._tokenizer.advance()
+        if self._tokenizer.symbol() == ".":
+            self._write_symbol()
+            self._tokenizer.advance()
+            self._write_identifier()
+            self._tokenizer.advance()
+
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileExpressionList()
+
+        self._write_symbol()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\doStatement>")
+        self._tokenizer.advance()
 
     def compileLet(self):
         self._output.write("\t" * self._indentation + "<letStatement>")
@@ -181,10 +204,42 @@ class CompilationEngine:
         self._tokenizer.advance()
 
     def compileWhile(self):
-        pass
+        self._output.write("\t" * self._indentation + "<whileStatement>")
+        self._indentation += 1
+        self._write_keyword()
+
+        self._tokenizer.advance()
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileExpression()
+
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileStatements()
+
+        self._write_symbol()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\whileStatement>")
+        self._tokenizer.advance()
 
     def compileReturn(self):
-        pass
+        self._output.write("\t" * self._indentation + "<returnStatement>")
+        self._indentation += 1
+        self._write_keyword()
+
+        self._tokenizer.advance()
+        if self._tokenizer.tokenType() != self._tokenizer.SYMBOL and \
+                self._tokenizer.symbol() != ";":
+            self.compileExpression()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\\returnStatement>")
 
     def compileIf(self):
         self._output.write("\t" * self._indentation + "<ifStatement>")
