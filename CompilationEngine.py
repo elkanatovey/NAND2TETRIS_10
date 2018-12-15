@@ -1,3 +1,4 @@
+import re
 from JackTokenizer import JackTokenizer
 
 class CompilationEngine:
@@ -13,10 +14,12 @@ class CompilationEngine:
         self._indentation = 0
         self._tokenizer = JackTokenizer(input_file_path)
         self._output = open(output_path, "w+")
+        if self._tokenizer.hasMoreTokens():
+            self._tokenizer.advance()
+            self.compileClass()
 
 
     def compileClass(self):
-        self._tokenizer.advance()
         self._output.write("<class>\n")
         self._indentation += 1
 
@@ -29,6 +32,7 @@ class CompilationEngine:
         self._tokenizer.advance()
         self._write_symbol()
 
+        self._tokenizer.advance()
         self.compileClassVarDec()
         self.compileSubroutine()
 
@@ -46,13 +50,27 @@ class CompilationEngine:
         should run on the recursively
         :return:
         """
-        self._indentation += 1
-        ## code prints class vars recursively
+        if self._tokenizer.keyWord() == "static" or\
+            self._tokenizer.keyWord() == "field":
+            self._output.write("\t" * self._indentation + "<classVarDec>")
+            self._indentation += 1
+            self._write_keyword()
 
-        self._indentation -= 1
+
+            ## code prints class vars recursively
+
+            self._indentation -= 1
+            self._output.write("\t" * self._indentation + "<\classVarDec>")
+
 
     def compileSubroutine(self):
-        pass
+        if self._tokenizer.keyWord() == "constructor" or \
+                self._tokenizer.keyWord() == "function" \
+                or self._tokenizer == "method":
+            self._indentation += 1
+            ## some magic here
+
+            self._indentation -= 1
 
     def compileParameterList(self):
         pass
