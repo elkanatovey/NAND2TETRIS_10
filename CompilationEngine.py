@@ -187,7 +187,42 @@ class CompilationEngine:
         pass
 
     def compileIf(self):
-        pass
+        self._output.write("\t" * self._indentation + "<ifStatement>")
+        self._indentation += 1
+        self._write_keyword()
+
+        self._tokenizer.advance()
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileExpression()
+
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        self.compileStatements()
+
+        self._write_symbol()
+
+        self._tokenizer.advance()
+        if self._tokenizer.tokenType() == self._tokenizer.KEYWORD and \
+                self._tokenizer.keyWord() == "else":
+            self._write_keyword()
+
+            self._tokenizer.advance()
+            self._write_symbol()
+
+            self._tokenizer.advance()
+            self.compileStatements()
+
+            self._write_symbol()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\ifStatement>")
+        self._tokenizer.advance()
 
     def compileExpression(self):
         pass
