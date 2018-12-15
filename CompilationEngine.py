@@ -92,11 +92,8 @@ class CompilationEngine:
         self._write_symbol()
 
         self._tokenizer.advance()
-        # compile varDec:
         while self._tokenizer.keyWord() == "var":
-            self._write_keyword()
-            self._tokenizer.advance()
-            self._compile_type_and_varName()
+            self.compileVarDec()
 
         self.compileStatements()
 
@@ -108,13 +105,51 @@ class CompilationEngine:
         self._tokenizer.advance()
 
     def compileParameterList(self):
-        pass
+        self._output.write("\t" * self._indentation + "<parameterList>")
+        self._indentation += 1
+        while self._tokenizer.tokenType() != self._tokenizer.SYMBOL:
+            if self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
+                self._write_keyword()
+            elif self._tokenizer.tokenType() == self._tokenizer.IDENTIFIER:
+                self._write_identifier()
+            self._tokenizer.advance()
+            self._write_identifier()
+            self._tokenizer.advance()
+            if self._tokenizer.symbol() == ",":
+                self._write_symbol()
+                self._tokenizer.advance()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\parameterList>")
+        self._tokenizer.advance()
 
     def compileVarDec(self):
-        pass
+        self._output.write("\t" * self._indentation + "<varDec>")
+        self._indentation += 1
+
+        self._write_keyword()
+        self._tokenizer.advance()
+        self._compile_type_and_varName()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\\varDec>")
 
     def compileStatements(self):
-        pass
+        self._output.write("\t" * self._indentation + "<statements>")
+        self._indentation += 1
+        while self._tokenizer.tokenType() == self._tokenizer.keyWord():
+            if self._tokenizer.keyWord() == "let":
+                self.compileLet()
+            elif self._tokenizer.keyWord() == "if":
+                self.compileIf()
+            elif self._tokenizer.keyWord() == "while":
+                self.compileWhile()
+            elif self._tokenizer.keyWord() == "do":
+                self.compileDo()
+            elif self._tokenizer.keyWord() == "return":
+                self.compileReturn()
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\statements>")
 
     def compileDo(self):
         pass
