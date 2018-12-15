@@ -12,7 +12,7 @@ STRING_PATTERN = re.compile("^\s*\"(.*)\"\s*")
 IDENTIFIER_PATTERN = re.compile("^\s*([a-zA-Z_][a-zA-Z1-9_]*)\s*")
 
 
-DEBUGGING = True
+DEBUGGING = False
 
 class JackTokenizer:
     """
@@ -38,8 +38,6 @@ class JackTokenizer:
         with open(input_file_path, "r") as file:
             self.text = file.read()
         self._clear_all_comments()
-        if DEBUGGING:
-            print(self.text)
         self._tokenType = None
         self._currentToken = None
 
@@ -48,7 +46,6 @@ class JackTokenizer:
         Clear all comments from self.text .
         """
         self.text = re.sub(COMMENT, "", self.text)
-        print(self.text)
 
     def hasMoreTokens(self):
         if re.fullmatch(EMPTY_TEXT_PATTERN, self.text):

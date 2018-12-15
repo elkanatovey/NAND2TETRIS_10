@@ -11,8 +11,9 @@ from CompilationEngine import CompilationEngine
 
 INVALID_ARGS = "The file given as input is invalid..."
 NUMBER_OF_ARGS = 2
-VM_SUFFIX = ".vm$"
-JACK_SUFFIX = ".jack"
+XML_SUFFIX = ".xml"
+VM_SUFFIX = ".vm"
+JACK_SUFFIX = ".jack$"
 VALID_INPUT_SUFFIX = ".*\.jack$"
 JACK_SUFFIX_PATTERN = re.compile(VALID_INPUT_SUFFIX)
 COMMENT = "//.*$"
@@ -39,14 +40,10 @@ def get_files(args):
 def file_output_path(file_path):
     """
     :param file_path: The original file path
-    :return: the path to the output file (.vm).
+    :return: the path to the output file (.xml).
     """
-    if isfile(file_path):
-        return re.sub(JACK_SUFFIX, VM_SUFFIX, file_path)
-    else:
-        temp_path = re.sub("/$", "", file_path)
-        temp_list = temp_path.split("/")
-        return file_path + "/" + temp_list[len(temp_list) - 1] + VM_SUFFIX
+    temp_path = re.sub(JACK_SUFFIX, XML_SUFFIX, file_path)
+    return temp_path
 
 # The main program:
 if __name__ == "__main__":
