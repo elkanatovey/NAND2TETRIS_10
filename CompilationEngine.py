@@ -118,7 +118,6 @@ class CompilationEngine:
 
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "</parameterList>\n")
-        self._tokenizer.advance()
 
     def compileVarDec(self):
         self._output.write("\t" * self._indentation + "<varDec>\n")
@@ -134,7 +133,7 @@ class CompilationEngine:
     def compileStatements(self):
         self._output.write("\t" * self._indentation + "<statements>\n")
         self._indentation += 1
-        while self._tokenizer.tokenType() == self._tokenizer.keyWord():
+        while self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
             if self._tokenizer.keyWord() == "let":
                 self.compileLet()
             elif self._tokenizer.keyWord() == "if":
@@ -168,6 +167,9 @@ class CompilationEngine:
         self._tokenizer.advance()
         self.compileExpressionList()
 
+        self._write_symbol()
+
+        self._tokenizer.advance()
         self._write_symbol()
 
         self._indentation -= 1
