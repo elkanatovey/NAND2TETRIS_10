@@ -36,7 +36,7 @@ class CompilationEngine:
                 self.compileClassVarDec()
             while self._tokenizer.keyWord() == "constructor" or \
                     self._tokenizer.keyWord() == "function" \
-                    or self._tokenizer == "method":
+                    or self._tokenizer.keyWord() == "method":
                 self.compileSubroutine()
 
             self._write_symbol()
