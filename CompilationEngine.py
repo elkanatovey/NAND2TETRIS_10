@@ -237,8 +237,11 @@ class CompilationEngine:
                 self._tokenizer.symbol() != ";":
             self.compileExpression()
 
+        self._write_symbol()
+
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "</returnStatement>\n")
+        self._tokenizer.advance()
 
     def compileIf(self):
         self._output.write("\t" * self._indentation + "<ifStatement>\n")
