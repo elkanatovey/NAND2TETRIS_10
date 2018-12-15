@@ -277,10 +277,11 @@ class CompilationEngine:
             self.compileStatements()
 
             self._write_symbol()
+            self._tokenizer.advance()
 
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "</ifStatement>\n")
-        self._tokenizer.advance()
+
 
     def compileExpression(self):
         self._output.write("\t" * self._indentation + "<expression>\n")
