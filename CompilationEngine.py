@@ -33,8 +33,13 @@ class CompilationEngine:
         self._write_symbol()
 
         self._tokenizer.advance()
-        self.compileClassVarDec()
-        self.compileSubroutine()
+        while self._tokenizer.keyWord() == "static" or\
+            self._tokenizer.keyWord() == "field":
+            self.compileClassVarDec()
+        while self._tokenizer.keyWord() == "constructor" or \
+                self._tokenizer.keyWord() == "function" \
+                or self._tokenizer == "method":
+            self.compileSubroutine()
 
         self._tokenizer.advance()
         self._write_symbol()
@@ -50,27 +55,26 @@ class CompilationEngine:
         should run on the recursively
         :return:
         """
-        if self._tokenizer.keyWord() == "static" or\
-            self._tokenizer.keyWord() == "field":
-            self._output.write("\t" * self._indentation + "<classVarDec>")
-            self._indentation += 1
-            self._write_keyword()
+        self._output.write("\t" * self._indentation + "<classVarDec>")
+        self._indentation += 1
+        self._write_keyword()
 
+        self._tokenizer.advance()
 
-            ## code prints class vars recursively
+        ## code prints class vars recursively
 
-            self._indentation -= 1
-            self._output.write("\t" * self._indentation + "<\classVarDec>")
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\classVarDec>")
 
 
     def compileSubroutine(self):
-        if self._tokenizer.keyWord() == "constructor" or \
-                self._tokenizer.keyWord() == "function" \
-                or self._tokenizer == "method":
-            self._indentation += 1
-            ## some magic here
+        self._output.write("\t" * self._indentation + "<subroutineDec>")
+        self._indentation += 1
+        self._write_keyword()
+        ## some magic here
 
-            self._indentation -= 1
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "<\subroutineDec>")
 
     def compileParameterList(self):
         pass
