@@ -1,5 +1,6 @@
 from JackTokenizer import JackTokenizer
 
+OP_LIST = ["+", "-", "*", "/", "&", "|", "<", ">", "="]
 
 class CompilationEngine:
     """
@@ -282,18 +283,29 @@ class CompilationEngine:
         self._tokenizer.advance()
 
     def compileExpression(self):
-        # debugging - not finished!!
         self._output.write("\t" * self._indentation + "<expression>\n")
+        self._indentation += 1
+
+        self.compileTerm()
+        while self._tokenizer.tokenType() == self._tokenizer.SYMBOL and \
+                self._tokenizer.symbol() in OP_LIST:
+            self._write_symbol()
+            self._tokenizer.advance()
+            self.compileTerm()
+
+        self._indentation -= 1
+        self._output.write("\t" * self._indentation + "</expression>\n")
+
+    def compileTerm(self):
+        # debugging - not finished!!
+        self._output.write("\t" * self._indentation + "<term>\n")
         self._indentation += 1
 
         self._write_identifier()
         self._tokenizer.advance()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</expression>\n")
-
-    def compileTerm(self):
-        pass
+        self._output.write("\t" * self._indentation + "</term>\n")
 
     def compileExpressionList(self):
         self._output.write("\t" * self._indentation + "<expressionList>\n")
