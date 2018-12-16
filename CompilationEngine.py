@@ -284,6 +284,10 @@ class CompilationEngine:
 
 
     def compileExpression(self):
+        """
+        Note that tokenizer must be advanced before this is called!!!
+        :return:
+        """
         self._output.write("\t" * self._indentation + "<expression>\n")
         self._indentation += 1
 
@@ -301,8 +305,47 @@ class CompilationEngine:
         # debugging - not finished!!
         self._output.write("\t" * self._indentation + "<term>\n")
         self._indentation += 1
+        if self._tokenizer.tokenType() == self._tokenizer.INT_CONST:
+            self._write_int_const()
+        elif self._tokenizer.tokenType() == self._tokenizer.STRING_CONST:
+            self._write_str_const()
+        elif self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
+            self._write_keyword()
+        elif self._tokenizer.tokenType() == self._tokenizer.IDENTIFIER:
+            self._write_identifier()
+            self._tokenizer.advance()
+            if self._tokenizer.symbol() == "[":
+                self._write_symbol()
+                self._tokenizer.advance()
+                self.compileExpression()
+                self._write_symbol()
+            elif self._tokenizer.symbol() == ".":  ## subroutine case
+                self._write_symbol()
+                self._tokenizer.advance()
+                self._write_identifier()
+                self._tokenizer.advance()
+                self._write_symbol()
+                self._tokenizer.advance()
+                self.compileExpressionList()
+                self._write_symbol()
+            elif self._tokenizer.symbol() == "(":
+                self._write_symbol()
+                self._tokenizer.advance()
+                self.compileExpressionList()
+                self._write_symbol()
 
-        self._write_identifier()
+        elif self._tokenizer.symbol() == "(":
+            self._write_symbol()
+            self._tokenizer.advance()
+            self.compileExpression()
+            self._write_symbol()
+        elif self._tokenizer.symbol() == "~" or self._tokenizer.symbol() == \
+                "-":
+            self._write_symbol()
+            self._tokenizer.advance()
+            self.compileTerm()
+
+
         self._tokenizer.advance()
 
         self._indentation -= 1
@@ -351,3 +394,11 @@ class CompilationEngine:
     def _write_symbol(self):
         self._output.write("\t" * self._indentation + "<symbol> " +
                            self._tokenizer.symbol() + " </symbol>\n")
+
+    def _write_int_const(self):
+        self._output.write("\t" * self._indentation + "<integerConstant> " +
+                           self._tokenizer.identifier() + " </integerConstant>\n")
+
+    def _write_str_const(self):
+        self._output.write("\t" * self._indentation + "<stringConstant> " +
+                           self._tokenizer.identifier() + " </stringConstant>\n")
