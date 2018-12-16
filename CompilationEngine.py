@@ -400,8 +400,15 @@ class CompilationEngine:
                            self._tokenizer.keyWord() + " </keyword>\n")
 
     def _write_symbol(self):
+        string_to_write = self._tokenizer.symbol()
+        if self._tokenizer.symbol() == "<":
+            string_to_write = "&lt"
+        elif self._tokenizer.symbol() == ">":
+            string_to_write = "&gt"
+        elif self._tokenizer.symbol() == "&":
+            string_to_write = "&amp"
         self._output.write("\t" * self._indentation + "<symbol> " +
-                           self._tokenizer.symbol() + " </symbol>\n")
+                           string_to_write + " </symbol>\n")
 
     def _write_int_const(self):
         self._output.write("\t" * self._indentation + "<integerConstant> " +
