@@ -4,7 +4,7 @@ COMMENT = "(//.*)|(/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/)"
 EMPTY_TEXT_PATTERN = re.compile("\s*")
 KEY_WORD_PATTERN = re.compile("^\s*("
                               "class|constructor|function|method|static|field"
-                              "|var|int|char|booolean|void|true|false|null|this|"
+                              "|var|int|char|boolean|void|true|false|null|this|"
                               "let|do|if|else|while|return)\s*")
 SYMBOL_PATTERN = re.compile("^\s*([{}()\[\].,;+\-*/&|<>=~])\s*")
 DIGIT_PATTERN = re.compile("^\s*(\d+)\s*")
