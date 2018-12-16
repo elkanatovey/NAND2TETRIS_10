@@ -408,7 +408,7 @@ class CompilationEngine:
         elif self._tokenizer.symbol() == "&":
             string_to_write = "&amp"
         self._output.write("  " * self._indentation + "<symbol> " +
-                           self._tokenizer.symbol() + " </symbol>\n")
+                           string_to_write + " </symbol>\n")
 
     def _write_int_const(self):
         self._output.write("  " * self._indentation + "<integerConstant> " +
