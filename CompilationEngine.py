@@ -51,7 +51,7 @@ class CompilationEngine:
         should run on the recursively
         :return:
         """
-        self._output.write("\t" * self._indentation + "<classVarDec>\n")
+        self._output.write(" " * self._indentation + "<classVarDec>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -59,10 +59,10 @@ class CompilationEngine:
         self._compile_type_and_varName()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</classVarDec>\n")
+        self._output.write(" " * self._indentation + "</classVarDec>\n")
 
     def compileSubroutine(self):
-        self._output.write("\t" * self._indentation + "<subroutineDec>\n")
+        self._output.write(" " * self._indentation + "<subroutineDec>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -85,7 +85,7 @@ class CompilationEngine:
 
         self._tokenizer.advance()
         # compile subroutineBody:
-        self._output.write("\t" * self._indentation + "<subroutineBody>\n")
+        self._output.write(" " * self._indentation + "<subroutineBody>\n")
         self._indentation += 1
         self._write_symbol()
 
@@ -97,13 +97,13 @@ class CompilationEngine:
 
         self._write_symbol()
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</subroutineBody>\n")
+        self._output.write(" " * self._indentation + "</subroutineBody>\n")
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</subroutineDec>\n")
+        self._output.write(" " * self._indentation + "</subroutineDec>\n")
         self._tokenizer.advance()
 
     def compileParameterList(self):
-        self._output.write("\t" * self._indentation + "<parameterList>\n")
+        self._output.write(" " * self._indentation + "<parameterList>\n")
         self._indentation += 1
         while self._tokenizer.tokenType() != self._tokenizer.SYMBOL:
             if self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
@@ -118,10 +118,10 @@ class CompilationEngine:
                 self._tokenizer.advance()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</parameterList>\n")
+        self._output.write(" " * self._indentation + "</parameterList>\n")
 
     def compileVarDec(self):
-        self._output.write("\t" * self._indentation + "<varDec>\n")
+        self._output.write(" " * self._indentation + "<varDec>\n")
         self._indentation += 1
 
         self._write_keyword()
@@ -129,10 +129,10 @@ class CompilationEngine:
         self._compile_type_and_varName()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</varDec>\n")
+        self._output.write(" " * self._indentation + "</varDec>\n")
 
     def compileStatements(self):
-        self._output.write("\t" * self._indentation + "<statements>\n")
+        self._output.write(" " * self._indentation + "<statements>\n")
         self._indentation += 1
         while self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
             if self._tokenizer.keyWord() == "let":
@@ -146,10 +146,10 @@ class CompilationEngine:
             elif self._tokenizer.keyWord() == "return":
                 self.compileReturn()
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</statements>\n")
+        self._output.write(" " * self._indentation + "</statements>\n")
 
     def compileDo(self):
-        self._output.write("\t" * self._indentation + "<doStatement>\n")
+        self._output.write(" " * self._indentation + "<doStatement>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -174,11 +174,11 @@ class CompilationEngine:
         self._write_symbol()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</doStatement>\n")
+        self._output.write(" " * self._indentation + "</doStatement>\n")
         self._tokenizer.advance()
 
     def compileLet(self):
-        self._output.write("\t" * self._indentation + "<letStatement>\n")
+        self._output.write(" " * self._indentation + "<letStatement>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -200,11 +200,11 @@ class CompilationEngine:
         self._write_symbol()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</letStatement>\n")
+        self._output.write(" " * self._indentation + "</letStatement>\n")
         self._tokenizer.advance()
 
     def compileWhile(self):
-        self._output.write("\t" * self._indentation + "<whileStatement>\n")
+        self._output.write(" " * self._indentation + "<whileStatement>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -225,11 +225,11 @@ class CompilationEngine:
         self._write_symbol()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</whileStatement>\n")
+        self._output.write(" " * self._indentation + "</whileStatement>\n")
         self._tokenizer.advance()
 
     def compileReturn(self):
-        self._output.write("\t" * self._indentation + "<returnStatement>\n")
+        self._output.write(" " * self._indentation + "<returnStatement>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -241,11 +241,11 @@ class CompilationEngine:
         self._write_symbol()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</returnStatement>\n")
+        self._output.write(" " * self._indentation + "</returnStatement>\n")
         self._tokenizer.advance()
 
     def compileIf(self):
-        self._output.write("\t" * self._indentation + "<ifStatement>\n")
+        self._output.write(" " * self._indentation + "<ifStatement>\n")
         self._indentation += 1
         self._write_keyword()
 
@@ -280,7 +280,7 @@ class CompilationEngine:
             self._tokenizer.advance()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</ifStatement>\n")
+        self._output.write(" " * self._indentation + "</ifStatement>\n")
 
 
     def compileExpression(self):
@@ -288,7 +288,7 @@ class CompilationEngine:
         Note that tokenizer must be advanced before this is called!!!
         :return:
         """
-        self._output.write("\t" * self._indentation + "<expression>\n")
+        self._output.write(" " * self._indentation + "<expression>\n")
         self._indentation += 1
 
         self.compileTerm()
@@ -299,12 +299,12 @@ class CompilationEngine:
             self.compileTerm()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</expression>\n")
+        self._output.write(" " * self._indentation + "</expression>\n")
 
     def compileTerm(self):
         # debugging - not finished!!
         sanity_check = True
-        self._output.write("\t" * self._indentation + "<term>\n")
+        self._output.write(" " * self._indentation + "<term>\n")
         self._indentation += 1
         if self._tokenizer.tokenType() == self._tokenizer.INT_CONST:
             self._write_int_const()
@@ -346,6 +346,7 @@ class CompilationEngine:
             self._write_symbol()
         elif self._tokenizer.symbol() == "~" or self._tokenizer.symbol() == \
                 "-":
+            sanity_check = False
             self._write_symbol()
             self._tokenizer.advance()
             self.compileTerm()
@@ -354,10 +355,10 @@ class CompilationEngine:
             self._tokenizer.advance()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</term>\n")
+        self._output.write(" " * self._indentation + "</term>\n")
 
     def compileExpressionList(self):
-        self._output.write("\t" * self._indentation + "<expressionList>\n")
+        self._output.write(" " * self._indentation + "<expressionList>\n")
         self._indentation += 1
 
         if self._tokenizer.tokenType() != self._tokenizer.SYMBOL and \
@@ -370,7 +371,7 @@ class CompilationEngine:
                 self.compileExpression()
 
         self._indentation -= 1
-        self._output.write("\t" * self._indentation + "</expressionList>\n")
+        self._output.write(" " * self._indentation + "</expressionList>\n")
 
     def _compile_type_and_varName(self):
         if self._tokenizer.tokenType() == self._tokenizer.KEYWORD:
@@ -389,21 +390,21 @@ class CompilationEngine:
         self._tokenizer.advance()
 
     def _write_identifier(self):
-        self._output.write("\t" * self._indentation + "<identifier> " +
+        self._output.write(" " * self._indentation + "<identifier> " +
                            self._tokenizer.identifier() + " </identifier>\n")
 
     def _write_keyword(self):
-        self._output.write("\t" * self._indentation + "<keyword> " +
+        self._output.write(" " * self._indentation + "<keyword> " +
                            self._tokenizer.keyWord() + " </keyword>\n")
 
     def _write_symbol(self):
-        self._output.write("\t" * self._indentation + "<symbol> " +
+        self._output.write(" " * self._indentation + "<symbol> " +
                            self._tokenizer.symbol() + " </symbol>\n")
 
     def _write_int_const(self):
-        self._output.write("\t" * self._indentation + "<integerConstant> " +
+        self._output.write(" " * self._indentation + "<integerConstant> " +
                            self._tokenizer.identifier() + " </integerConstant>\n")
 
     def _write_str_const(self):
-        self._output.write("\t" * self._indentation + "<stringConstant> " +
+        self._output.write(" " * self._indentation + "<stringConstant> " +
                            self._tokenizer.identifier() + " </stringConstant>\n")
