@@ -372,6 +372,13 @@ class CompilationEngine:
                 self._write_symbol()
                 self._tokenizer.advance()
                 self.compileExpression()
+        if self._tokenizer.symbol() =="(":
+            self.compileExpression()
+            while self._tokenizer.tokenType() == self._tokenizer.SYMBOL and \
+                    self._tokenizer.symbol() == ",":
+                self._write_symbol()
+                self._tokenizer.advance()
+                self.compileExpression()
 
         self._indentation -= 1
         self._output.write(" " * self._indentation + "</expressionList>\n")
