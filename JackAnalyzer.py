@@ -1,7 +1,7 @@
 ##############################################################################
-# FILE : VMtranslator.py
+# FILE : JackAnalyzer.py
 # WRITER : Aviad Dudkewitz, Elkana Tovey
-# DESCRIPTION: This program translate VM code to Hack assembly language.
+# DESCRIPTION: This program translate Jack code to xml.
 ##############################################################################
 import sys
 import re
