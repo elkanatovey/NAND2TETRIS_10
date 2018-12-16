@@ -303,6 +303,7 @@ class CompilationEngine:
 
     def compileTerm(self):
         # debugging - not finished!!
+        sanity_check = True
         self._output.write("\t" * self._indentation + "<term>\n")
         self._indentation += 1
         if self._tokenizer.tokenType() == self._tokenizer.INT_CONST:
@@ -314,12 +315,15 @@ class CompilationEngine:
         elif self._tokenizer.tokenType() == self._tokenizer.IDENTIFIER:
             self._write_identifier()
             self._tokenizer.advance()
+            sanity_check = False
             if self._tokenizer.symbol() == "[":
+                sanity_check = True
                 self._write_symbol()
                 self._tokenizer.advance()
                 self.compileExpression()
                 self._write_symbol()
             elif self._tokenizer.symbol() == ".":  ## subroutine case
+                sanity_check = True
                 self._write_symbol()
                 self._tokenizer.advance()
                 self._write_identifier()
@@ -329,6 +333,7 @@ class CompilationEngine:
                 self.compileExpressionList()
                 self._write_symbol()
             elif self._tokenizer.symbol() == "(":
+                sanity_check = True
                 self._write_symbol()
                 self._tokenizer.advance()
                 self.compileExpressionList()
@@ -345,8 +350,8 @@ class CompilationEngine:
             self._tokenizer.advance()
             self.compileTerm()
 
-
-        self._tokenizer.advance()
+        if sanity_check:
+            self._tokenizer.advance()
 
         self._indentation -= 1
         self._output.write("\t" * self._indentation + "</term>\n")
