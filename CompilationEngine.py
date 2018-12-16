@@ -314,6 +314,8 @@ class CompilationEngine:
             self._write_keyword()
         elif self._tokenizer.tokenType() == self._tokenizer.IDENTIFIER:
             self._write_identifier()
+
+
             self._tokenizer.advance()
             sanity_check = False
             if self._tokenizer.symbol() == "[":
@@ -349,6 +351,7 @@ class CompilationEngine:
             self._write_symbol()
             self._tokenizer.advance()
             self.compileTerm()
+            sanity_check = False
 
         if sanity_check:
             self._tokenizer.advance()
